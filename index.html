@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ထိမ်းမြားမင်္ဂလာ ကတိသစ္စာပြုလွှာ - Ko Ko & Honey</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Pyidaungsu', 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #f4ebf7 0%, #e8d7ef 100%);
+      color: #3b2d45;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .contract-card {
+      background: #ffffff;
+      border: 2px solid #9b59b6;
+      border-radius: 16px;
+      padding: 30px;
+      max-width: 650px;
+      width: 100%;
+      box-shadow: 0 10px 30px rgba(155, 89, 182, 0.15);
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+      border-bottom: 2px dashed #d7bde2;
+      padding-bottom: 15px;
+    }
+    .header h1 { color: #6c3483; font-size: 24px; margin-bottom: 5px; }
+    .couple-names { font-size: 17px; font-weight: bold; color: #8e44ad; margin-top: 5px; }
+    .content {
+      line-height: 1.8;
+      font-size: 15px;
+      margin-bottom: 20px;
+      text-align: justify;
+      color: #512e5f;
+      background: #fcf8fd;
+      padding: 15px;
+      border-radius: 8px;
+      border-left: 4px solid #9b59b6;
+    }
+    .signature-section { display: flex; flex-direction: column; gap: 15px; }
+    .sig-box {
+      border: 1px solid #ebdef0;
+      border-radius: 10px;
+      padding: 12px;
+      background: #fdfbfd;
+    }
+    .sig-box label { display: block; font-weight: bold; margin-bottom: 6px; color: #6c3483; font-size: 14px; }
+    canvas {
+      width: 100%;
+      height: 120px;
+      background: #ffffff;
+      border: 1px dashed #c39bd3;
+      border-radius: 8px;
+      cursor: crosshair;
+      touch-action: none;
+    }
+    .btn-group { margin-top: 6px; display: flex; justify-content: flex-end; }
+    button {
+      padding: 6px 12px;
+      border: none;
+      border-radius: 6px;
+      font-size: 13px;
+      cursor: pointer;
+    }
+    .btn-clear { background: #f5b7b1; color: #78281f; font-weight: bold; }
+    .btn-action {
+      background: #8e44ad;
+      color: white;
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      font-weight: bold;
+      margin-top: 20px;
+      border-radius: 8px;
+    }
+    .sync-box {
+      background: #f4ecf7;
+      border: 1px solid #d7bde2;
+      padding: 15px;
+      border-radius: 8px;
+      margin-top: 15px;
+      text-align: center;
+    }
+    .sync-box input {
+      width: 180px;
+      padding: 8px;
+      margin-top: 8px;
+      border: 1px solid #c39bd3;
+      border-radius: 6px;
+      font-size: 20px;
+      text-align: center;
+      letter-spacing: 4px;
+      font-weight: bold;
+      color: #6c3483;
+    }
+    #result-container { display: none; text-align: center; }
+    .preview-box {
+      border: 2px solid #af7ac5;
+      border-radius: 12px;
+      padding: 20px;
+      background: #fff;
+      margin-bottom: 20px;
+      text-align: left;
+    }
+    .preview-signatures { display: flex; justify-content: space-around; margin-top: 20px; gap: 15px; }
+    .preview-sig-item { text-align: center; flex: 1; }
+    .preview-sig-item img {
+      max-width: 100%;
+      height: 75px;
+      border-bottom: 1px solid #9b59b6;
+      object-fit: contain;
+    }
+    .preview-sig-item p { font-size: 13px; color: #6c3483; margin-top: 5px; font-weight: bold; }
+  </style>
+</head>
+<body>
+
+  <div class="contract-card" id="card-form">
+    <div class="header">
+      <h1>ထိမ်းမြားမင်္ဂလာ ကတိသစ္စာပြုလွှာ</h1>
+      <div class="couple-names">Swan Htet Ko Ko 💞 Chan Myae Kyi</div>
+      <p style="margin-top: 3px; color: #8e44ad; font-size: 13px;">( Ko Ko & Honey 🖤💜 )</p>
+    </div>
+
+    <div class="content">
+      <p>ကျွန်ုပ်တို့ဖြစ်ကြသော <b>Swan Htet Ko Ko (Ko Ko)</b> နှင့် <b>Chan Myae Kyi (Honey)</b> တို့သည် ထာဝရ ဘဝတစ်လျှောက်လုံး သစ္စာရှိစွာ ပေါင်းသင်းနေထိုင်သွားမည်ဟု ဤကတိသစ္စာပြုလွှာဖြင့် အတည်ပြုလက်မှတ်ရေးထိုးပါသည်။</p>
+    </div>
+
+    <div class="signature-section">
+      <div class="sig-box">
+        <label>🖤 သတို့သား (Swan Htet Ko Ko / Ko Ko):</label>
+        <canvas id="groomCanvas"></canvas>
+        <div class="btn-group">
+          <button class="btn-clear" onclick="clearCanvas('groomCanvas')">ပြန်ဖျက်မည်</button>
+        </div>
+      </div>
+
+      <div class="sig-box">
+        <label>💜 သတို့သမီး (Chan Myae Kyi / Honey):</label>
+        <canvas id="brideCanvas"></canvas>
+        <div class="btn-group">
+          <button class="btn-clear" onclick="clearCanvas('brideCanvas')">ပြန်ဖျက်မည်</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PIN Sync Section -->
+    <div class="sync-box">
+      <b>🔢 ဂဏန်း ၆ လုံးဖြင့် Sync လုပ်ရန်:</b>
+      <p style="font-size: 11px; color: #666; margin-top: 3px;">နှစ်ယောက်သား တူတူညှိထားတဲ့ ဂဏန်း ၆ လုံး (သို့) ဖုန်းနံပါတ်နောက်ဆုံး ၆ လုံးကို အောက်မှာရိုက်ထည့်ပြီး သိမ်းဆည်း/ဖတ်ရှုပါ</p>
+      
+      <div>
+        <input type="text" id="syncCodeInput" placeholder="123456" maxlength="6">
+      </div>
+
+      <div style="display: flex; gap: 8px; margin-top: 10px; justify-content: center;">
+        <button type="button" onclick="savePinCode()" style="background: #9b59b6; color:white; padding:8px 14px; border-radius:6px; font-weight:bold;">📤 Code သိမ်းမည်</button>
+        <button type="button" onclick="loadPinCode()" style="background: #27ae60; color:white; padding:8px 14px; border-radius:6px; font-weight:bold;">📥 Code ဖြင့်ဖတ်မည်</button>
+      </div>
+    </div>
+
+    <button class="btn-action" onclick="showPreview()">✨ နှစ်ဦးသား စာချုပ်ပုံစံ ကြည့်မည် & Download ဆွဲမည်</button>
+  </div>
+
+  <div class="contract-card" id="result-container">
+    <div class="header">
+      <h1>✨ Ko Ko & Honey ၏ ကတိသစ္စာပြုလွှာ ✨🖤💜</h1>
+      <div class="couple-names">Swan Htet Ko Ko & Chan Myae Kyi</div>
+      <p style="margin-top: 3px; color: #117a65; font-size: 13px;">🖤💜 လက်ထပ်စာချုပ် တရားဝင် အမှတ်တရ 💜🖤</p>
+    </div>
+
+    <div class="preview-box">
+      <div style="font-size: 14px; line-height: 1.8; color: #512e5f; text-align: justify; margin-bottom: 15px;">
+        <p>ကျွန်ုပ်တို့ဖြစ်ကြသော <b>Swan Htet Ko Ko (Ko Ko)</b> နှင့် <b>Chan Myae Kyi (Honey)</b> တို့သည် ကျန်းမာသည်ဖြစ်စေ မကျန်းမာသည်ဖြစ်စေ ချမ်းသာသည်ဖြစ်စေ မချမ်းသာသည်ဖြစ်စေ မည့်သည့်အခြေနေ၌မဆို ထာဝရ တစ်ဦးအပေါ်တစ်ဦး သစ္စာရှိစွာ လက်တွဲသွားမည်ဖြစ်ကြောင်း ကတိသစ္စာပြုပါသည်။</p>
+      </div>
+
+      <div class="preview-signatures">
+        <div class="preview-sig-item">
+          <img id="prevGroomImg" src="" alt="Groom Signature">
+          <p>Ko Ko (Swan Htet Ko Ko)</p>
+        </div>
+        <div class="preview-sig-item">
+          <img id="prevBrideImg" src="" alt="Bride Signature">
+          <p>Honey (Chan Myae Kyi)</p>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn-action" onclick="downloadContractImage()" style="background: #27ae60; margin-bottom: 10px;">📥 စာချုပ်ပုံစံကို Download ဆွဲမည်</button>
+    <button class="btn-action" onclick="goBackToEdit()" style="background: #95a5a6; margin-top: 0;">✏️ လက်မှတ်ပြန်ပြင်ရန်</button>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      databaseURL: "https://koko-honey-contract-default-rtdb.firebaseio.com/"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const dbRef = firebase.database().ref("contracts");
+
+    function setupCanvas(canvasId, strokeColor) {
+      const canvas = document.getElementById(canvasId);
+      const ctx = canvas.getContext('2d');
+
+      function resizeCanvas() {
+        const rect = canvas.getBoundingClientRect();
+        canvas.width = rect.width;
+        canvas.height = rect.height;
+        ctx.strokeStyle = strokeColor;
+        ctx.lineWidth = 2.5;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+      }
+
+      resizeCanvas();
+
+      let isDrawing = false;
+      function getPos(e) {
+        const rect = canvas.getBoundingClientRect();
+        let clientX = e.clientX, clientY = e.clientY;
+        if (e.touches && e.touches.length > 0) {
+          clientX = e.touches[0].clientX;
+          clientY = e.touches[0].clientY;
+        }
+        return { x: clientX - rect.left, y: clientY - rect.top };
+      }
+
+      function startDrawing(e) {
+        isDrawing = true;
+        const pos = getPos(e);
+        ctx.beginPath();
+        ctx.moveTo(pos.x, pos.y);
+      }
+      function draw(e) {
+        if (!isDrawing) return;
+        const pos = getPos(e);
+        ctx.lineTo(pos.x, pos.y);
+        ctx.stroke();
+      }
+      function stopDrawing() { isDrawing = false; }
+
+      canvas.addEventListener('mousedown', startDrawing);
+      canvas.addEventListener('mousemove', draw);
+      canvas.addEventListener('mouseup', stopDrawing);
+      canvas.addEventListener('mouseleave', stopDrawing);
+
+      canvas.addEventListener('touchstart', (e) => { e.preventDefault(); startDrawing(e); });
+      canvas.addEventListener('touchmove', (e) => { e.preventDefault(); draw(e); });
+      canvas.addEventListener('touchend', stopDrawing);
+    }
+
+    const groomCanvas = document.getElementById('groomCanvas');
+    const brideCanvas = document.getElementById('brideCanvas');
+    setupCanvas('groomCanvas', '#4a235a');
+    setupCanvas('brideCanvas', '#884ea0');
+
+    function clearCanvas(canvasId) {
+      const canvas = document.getElementById(canvasId);
+      const ctx = canvas.getContext('2d');
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+    // ကိုယ်ကြိုက်တဲ့ ဂဏန်း ၆ လုံး ကိုယ်တိုင်ရိုက်ထည့်ပြီး Database ထဲ သိမ်းရန်
+    function savePinCode() {
+      const pin = document.getElementById('syncCodeInput').value.trim();
+      if (pin.length !== 6) {
+        alert("ကျေးဇူးပြု၍ ဂဏန်း ၆ လုံး ზუსတ្សတိ ရိုက်ထည့်ပါ။");
+        return;
+      }
+
+      const payload = {
+        groom: groomCanvas.toDataURL(),
+        bride: brideCanvas.toDataURL()
+      };
+
+      dbRef.child(pin).set(payload).then(() => {
+        alert("✨ ဂဏန်း " + pin + " ဖြင့် လက်မှတ်များကို Database တွင် အောင်မြင်စွာ သိမ်းဆည်းပြီးပါပြီ!");
+      }).catch(err => {
+        alert("သိမ်းဆည်း၍ မရပါ။ အင်တာနက်လိုင်း စစ်ဆေးပါ။");
+      });
+    }
+
+    // ရိုက်ထည့်ထားသော ဂဏန်း ၆ လုံးဖြင့် Database မှ ပြန်ဆွဲထုတ်ရန်
+    function loadPinCode() {
+      const pin = document.getElementById('syncCodeInput').value.trim();
+      if (pin.length !== 6) {
+        alert("ကျေးဇူးပြု၍ ရှာလိုသည့် ဂဏန်း ၆ လုံးကို ထည့်ပါ။");
+        return;
+      }
+
+      dbRef.child(pin).once('value').then(snapshot => {
+        const data = snapshot.val();
+        if (!data) {
+          alert("ဒီဂဏန်းနဲ့ သိမ်းထားတဲ့ လက်မှတ် မရှိသေးပါ။");
+          return;
+        }
+
+        if (data.groom) {
+          let imgG = new Image();
+          imgG.src = data.groom;
+          imgG.onload = () => {
+            const ctxG = groomCanvas.getContext('2d');
+            ctxG.clearRect(0, 0, groomCanvas.width, groomCanvas.height);
+            ctxG.drawImage(imgG, 0, 0, groomCanvas.width, groomCanvas.height);
+          };
+        }
+
+        if (data.bride) {
+          let imgB = new Image();
+          imgB.src = data.bride;
+          imgB.onload = () => {
+            const ctxB = brideCanvas.getContext('2d');
+            ctxB.clearRect(0, 0, brideCanvas.width, brideCanvas.height);
+            ctxB.drawImage(imgB, 0, 0, brideCanvas.width, brideCanvas.height);
+          };
+        }
+
+        alert("✨ လက်မှတ်များကို အောင်မြင်စွာ ဆွဲယူပြီးပါပြီ! ✨");
+      }).catch(err => {
+        alert("ဒေတာ ရယူရာတွင် အမှားအယွင်း ရှိနေပါသည်။");
+      });
+    }
+
+    function showPreview() {
+      document.getElementById('prevGroomImg').src = groomCanvas.toDataURL();
+      document.getElementById('prevBrideImg').src = brideCanvas.toDataURL();
+      document.getElementById('card-form').style.display = 'none';
+      document.getElementById('result-container').style.display = 'block';
+    }
+
+    function goBackToEdit() {
+      document.getElementById('result-container').style.display = 'none';
+      document.getElementById('card-form').style.display = 'block';
+    }
+
+    function downloadContractImage() {
+      const previewBox = document.getElementById('result-container');
+      html2canvas(previewBox, { scale: 2 }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = 'KoKo_And_Honey_Marriage_Contract.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      });
+    }
+  </script>
+</body>
+</html>
